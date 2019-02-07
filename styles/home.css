@@ -1,0 +1,12 @@
+.jumbotron{
+    position: relative;
+}
+.jumbotron #edit{
+    display: none;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+}
+.jumbotron #edit:hover{
+    cursor: pointer;
+}

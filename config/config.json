@@ -1,0 +1,7 @@
+{
+  "url":"localhost:12345/admin",
+  "sqlHost":"localhost:3306",
+  "dbname":"jxjjb",
+  "sql_username":"root",
+  "sql_psw":"1097300052dz"
+}
