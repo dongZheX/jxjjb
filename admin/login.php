@@ -5,7 +5,7 @@
  * Date: 2019/2/6
  * Time: 11:16
  */
-header("Content-type: text/json;charset=utf-8");
+header("Content-type: json/html;charset=utf-8");
 header("Cache-Control: no-cache");
 session_start();
 //读取参数
