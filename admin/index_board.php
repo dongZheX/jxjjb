@@ -11,8 +11,10 @@ if(isset($_REQUEST['action']))$action = $_REQUEST['action'];
 if(isset($_REQUEST['content']))$content = $_REQUEST['content'];
 if($action==1){
     $file = '../data/index_board.txt';
-    $file = fopen($file,'w') or die('Unable to open file');
+    $file = fopen($file,'w');
     fwrite($file,$content);
+    fclose($file);
+
 }
 else{
     $files = '../data/index_board.txt';

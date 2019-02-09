@@ -1,17 +1,6 @@
 $(function () {
-    //导航栏
-    $("#navbarcol li").click(function () {
-        $(this).addClass("active").siblings().removeClass("active")
-        /*启用选项卡*/
-        $("#myTab a").click(function(e){
-            e.preventDefault();/*不要执行与事件有关的默认动作*/
-            $(this).tab('show');
-        })
-    });
-    //编辑按钮
     $("#edit").click(function () {
        $("#myModal2").modal({backdrop: 'static'});
-
     });
     //表单提交
     $("#edit_confirm_btn").click(function () {

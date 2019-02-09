@@ -41,7 +41,10 @@ $(function () {
             } else if (status == 1){
                 start = new Date(data['start']*1000).format("yyyy-MM-dd hh:mm:ss");
                 end = new Date(data['end']*1000).format("yyyy-MM-dd hh:mm:ss");
+                month = new Date(data['start']*1000).format("MM").replace("0","");
+                $("#date_month").html(month);
                 $("#deadline_date").html("提交日期&#58;\<strong\>"+start+"\<\/strong\>&nbsp-&nbsp\<strong\>"+end+"\<\/strong\>")
+
             }
         }
     })

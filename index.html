@@ -16,6 +16,7 @@
     <script src="scripts/jquery.cookie.js"></script>
     <!--jquery.validate-->
     <script type="text/javascript" src="scripts/jquery.validate.js" ></script>
+    <script type="text/javascript" src="scripts/jquery.validate.messages_cn.js"></script>
     <script src="scripts/bootbox.min.js"></script>
     <script src="scripts/toastr.js"></script>
     <script src="scripts/loginCheck.js"></script>
@@ -46,10 +47,10 @@
         </div>
         <div class="collapse navbar-collapse" id="navbarcol">
             <ul class="nav navbar-nav">
-                <li class="active" style="margin-left: 10px"><a href="#"><span class="glyphicon glyphicon-home" style="margin-right: 5px"></span >首页</a></li>
-                <li style="margin-left: 10px"><a href="#"><span class="glyphicon glyphicon-subscript" style="margin-right: 5px"></span >材料提交</a></li>
-                <li style="margin-left: 10px"><a href="#"><span class="glyphicon glyphicon-search" style="margin-right: 5px"></span >查询</a> </li>
-                <li style="margin-left: 10px"><a href="#"><span class="glyphicon glyphicon-check" style="margin-right: 5px">材料审核</a></li>
+                <li class="active" style="margin-left: 10px"><a href="index.html"><span class="glyphicon glyphicon-home" style="margin-right: 5px"></span >首页</a></li>
+                <li style="margin-left: 10px;display:none"><a href="submitMat.html"><span class="glyphicon glyphicon-subscript" style="margin-right: 5px"></span >材料提交</a></li>
+                <li style="margin-left: 10px;display:none"><a href="checkMat.html"><span class="glyphicon glyphicon-search" style="margin-right: 5px"></span >材料审核</a> </li>
+                <li style="margin-left: 10px"><a href="#"><span class="glyphicon glyphicon-check" style="margin-right: 5px"></span >查询</a></li>
             </ul>
             <ul class="nav navbar-right navbar-nav">
                 <li><a id="a_user_tag" href="#" data-toggle="popover"><span class="glyphicon glyphicon-user" style="margin-right: 5px"></span >我的</a></li>
@@ -64,14 +65,14 @@
         <a id="edit" class="pull-right"><span class="glyphicon glyphicon-edit" style="cursor: pointer;"></span>&nbsp编辑</a>
         <h2>欢迎登录机电与信息工程学院定级评优系统</h2>
         <div class="home_showInfo" style="margin-top: 20px">
-            <p><span style="margin-left: 4px;margin-top: 2px" class="glyphicon glyphicon-fire"></span><strong style="margin: 0 3px 0 4px; x">8</strong>月定级评优正在进行</p>
+            <p><span style="margin-left: 4px;margin-top: 2px" class="glyphicon glyphicon-fire"></span><strong style="margin: 0 3px 0 4px;" id="date_month"></strong>月定级评优正在进行</p>
             <p id="deadline_date"><img src="images/loading.gif"></p>
             <p id="content_info"><img  src="images/loading.gif"></p>
         </div>
         <p class="pull-right" style="padding-bottom: 20px;"><a href="https://ie.wh.sdu.edu.cn/xgzx/gqt/djpy.htm" class="btn btn-primary btn-lg" role="button">
             了解详情</a>
         </p>
-        <p class="pull-right" style="padding-bottom: 20px;margin-right: 10px"><a href="#" class="btn btn-primary btn-lg" role="button">
+        <p id="rightnow" class="pull-right" style="padding-bottom: 20px;margin-right: 10px;display: none"><a href="submitMat.html" class="btn btn-primary btn-lg" role="button">
             立即提交</a>
         </p>
         <br>

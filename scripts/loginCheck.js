@@ -13,10 +13,32 @@ $(function () {
             else{
                 if (data["user_tag"]==1){
                     $("#a_user_tag").prop("title","团学组织");
+                    $("#navbarcol ul li").eq(2).show();
                     $("#edit").show();
+                    //防止用户输入url
+                    if(window.location.toString().split("/")[3]=="submitMat.html"){
+                        bootbox.alert({
+                            size:"small",
+                            message:"您没有权限",
+                            callback:function () {
+                                window.location="index.html";
+                            }
+                        });
+                    }
                 }
                 else {
                     $("#a_user_tag").prop("title","团支部");
+                    $("#navbarcol ul li").eq(1).show();
+                    $("#rightnow").show();
+                    if(window.location.toString().split("/")[3]=="checkMat.html"){
+                        bootbox.alert({
+                            size:"small",
+                            message:"您没有权限",
+                            callback:function () {
+                                window.location="index.html";
+                            }
+                        });
+                    }
                 }
             }
 
