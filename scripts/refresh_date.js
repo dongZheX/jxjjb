@@ -44,6 +44,7 @@ $(function () {
                 month = new Date(data['start']*1000).format("MM").replace("0","");
                 $("#date_month").html(month);
                 $("#deadline_date").html("提交日期&#58;\<strong\>"+start+"\<\/strong\>&nbsp-&nbsp\<strong\>"+end+"\<\/strong\>")
+                //需要测试
 
             }
         }

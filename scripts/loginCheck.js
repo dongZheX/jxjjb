@@ -3,11 +3,20 @@ $(function () {
         url:"/admin/loginCheck.php",
         type:"post",
         dataType:"json",
+        error:function(){
+            toastr.error("出错");
+        },
+        complete:function(){
+        },
         success:function (data) {
             data = JSON.parse(JSON.stringify(data));
             if (data["status"]==0){
-                showDialog("警告","请先登录","glyphicon glyphicon-exclamation-sign",function () {
-                    window.location = "login.html";
+                bootbox.alert({
+                    size:"small",
+                    message:"请您先登录",
+                    callback:function () {
+                        window.location="login.html";
+                    }
                 })
             }
             else{

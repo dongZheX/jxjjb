@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Type" content="json/html; charset=UTF-8"/>
     <title>提交材料</title>
     <!--用百度的静态资源库的cdn安装bootstrap环境-->
     <!-- Bootstrap 核心 CSS 文件 -->
@@ -32,6 +32,7 @@
     <script src="scripts/jquery.media.js"></script>
     <script src="scripts/loginCheck.js"></script>
     <script src="scripts/subMat.js"></script>
+    <script src="scripts/submitted_select.js"></script>
     <link rel="stylesheet" href="styles/subMat.css">
     <style>
         a:hover{
@@ -76,8 +77,8 @@
             <!--面板头-->
             <div class="panel-heading">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li role="presentation" class="active"><a href="#matsubmit" data-toggle="pill" class="active">提交材料</a></li>
-
+                    <li role="presentation"><a href="#matsubmit" data-toggle="pill" class="active">提交材料</a></li>
+                    <li role="presentation"  class="active"><a href="#matSubmitted" data-toggle="pill" class="active">提交情况</a></li>
                 </ul>
             </div>
             <!--面板头结束-->
@@ -85,11 +86,24 @@
             <div class="panel-body">
                 <div class="tab-content">
                     <!--材料提交面板-->
-                    <div id="matsubmit" class="tab-pane active">
+                    <div id="matsubmit" class="tab-pane">
                         <button id="btn_addMat" type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-plus"></span> 添加
                         </button>
                         <table id="tb_upload"></table>
+                    </div>
+                    <div id="matSubmitted" class="tab-pane active">
+                        <!--//查询某班级-->
+                        <div>
+                            <form class="form-horizontal" id="submitted_form">
+                                <p style="display: inline">&nbsp&nbsp年级&nbsp:&nbsp</p><select id="select_y"></select>
+                                <p style="display: inline">&nbsp&nbsp专业&nbsp:&nbsp</p><select id="select_m"></select>
+                                <p style="display: inline">&nbsp&nbsp班级&nbsp:&nbsp</p><select id="select_class"></select>
+                                <input type="button" class="btn btn-default" style="margin-left: 20px;" id="submitted_btn" value="查询">
+                            </form>
+                        </div>
+                        <table id="tb_submitted"></table>
+                    </div>
                     </div>
                     <!--材料提交面板结束-->
                 </div>
@@ -166,11 +180,11 @@
                 <div class="modal-body" style="margin: auto 40px">
                     <div class="form-group">
                         <label for="re_MatName" class="">修改材料&#58;</label>
-                        <input id="re_MatName" type="text" class="form-control required col-lg-4" placeholder="请输入加分项名称"/>
+                        <input id="re_MatName" name="re_MatName" type="text" class="form-control required col-lg-4" placeholder="请输入加分项名称"/>
                     </div>
                     <div class="form-group">
                         <label for="re_MatFor" class="">所属大项&#58;</label>
-                        <select id="re_MatFor" class="form-control col-lg-4 ">
+                        <select id="re_MatFor" name="re_MatFor" class="form-control col-lg-4 required">
                             <option>思政建设</option>
                             <option>新媒体建设</option>
                             <option>学风建设</option>
@@ -185,12 +199,12 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="re_MatScore" class="">应加分&#58;</label>
-                        <input id="re_MatScore" type="text" class="form-control col-lg-4"/>
+                        <label for="re_MatScore" class="required">应加分&#58;</label>
+                        <input id="re_MatScore" name="re_MatScore" type="text" class="form-control col-lg-4 required"/>
                     </div>
                     <div class="form-group">
                         <label for="re_MatMat" class="">证明材料&#58;</label>
-                        <input id="re_MatMat" type="file"/>
+                        <input id="re_MatMat" type="file" name="re_MatMat"/>
                     </div>
                     <p style="color:red;margin-left: 0">注意:如果材料不修改无需再次上传</p>
 

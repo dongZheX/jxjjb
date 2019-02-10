@@ -12,6 +12,64 @@ $(function () {
             $("#commit_form").validate();
         }
     );
+    $("#alter_form").submit(function () {
+        let row = JSON.parse($.cookie("presentRow"));
+
+        let index = $.cookie("presentIndex");
+        if($("#alter_form").valid()){
+            bootbox.confirm({
+                size:"small",
+                message:"你确定要修改吗",
+                callback:function (res) {
+                    if(res){
+                        let formData_re = new FormData($("#alter_form")[0]);
+                        formData_re.append("action","3");
+                        formData_re.append("plus_id",row.plus_id);
+                        formData_re.append("plus_Certificate",row.plus_Certificate);
+                        $.ajax({
+                            url:"admin/commitMat.php",
+                            type:"post",
+                            dataType:"json",
+                            data:formData_re,
+                            contentType: false,
+                            processData:false,
+                            error:function () {
+                                toastr.error("错误");
+                            },
+                            success:function (data) {
+                                data = JSON.parse(JSON.stringify(data));
+                                if(data['status']==1){
+                                    let datat = {
+                                        "plus_Certificate":data['plus_Certificate'],
+                                        "plus_state":"未审核",
+                                        "plus_keywords":$("#re_MatName").val(),
+                                        "plus_item_B":$("#re_MatFor").val(),
+                                        "plus_point_submitted":$("#re_MatScore").val(),
+                                        "plus_audit_note":row.plus_audit_note,
+                                        "plus_audit_employee":row.plus_audit_employee
+                                    };
+                                    console.log(datat);
+                                    $("#tb_upload").bootstrapTable("updateRow",{index:index,row:datat});
+                                    // row.plus_Certificate = data['plus_Certificate'];
+                                    // row.plus_state = "未审核";
+                                    // row.plus_keywords = formdata.get("plus_keywords");
+                                    // row.plus_item_B = formdata.get("plus_item_B");
+                                    // row.plus_point_submitted = formdata("plus_point_submitted");
+                                    toastr.success("修改成功");
+                                    $("#re_addModal").modal("hide");
+                                }
+                                else{
+                                    toastr.error("修改失败");
+                                }
+
+                            }
+                        })
+                    }
+                }
+            });
+        }
+        return false;
+    })
     //提交材料表单提交
     $("#commit_form").submit(function () {
         if($("#commit_form").valid()){
@@ -65,23 +123,7 @@ $(function () {
         }
         return false;
     });
-    //修改材料表单提交
-    $("#alter_form").submit(function () {
-        formdata = new FormData($("#alter_form"));
-        formdata.append("action",2);
-        $.ajax({
-            url:"admin/commitMat.php",
-            type:"post",
-            dataType:"json",
-            data:formdata,
-            error:function () {
-                toastr.error("错误");
-            },
-            success:function (data) {
 
-            }
-        })
-    })
 });
 //初始化表格和点击事件
 let TableInit = function () {
@@ -197,15 +239,22 @@ window.operateEvents = {
             callback:function (res ){
                 if (res){
                     $.ajax({
-                        url:"admin/commitMat.php",
+                        url:"admin/commitMat.php?action=5",
                         type:"post",
                         dataType:"json",
-                        data:{action:"3",plus_id:row.plus_id},
+                        data:{action:"5",plus_id:row.plus_id},
                         error:function () {
                             toastr.error("错误");
                         },
                         success:function (data) {
-
+                            data = JSON.parse(JSON.stringify(data));
+                            if (data['status']==1){
+                                toastr.success("删除成功！");
+                                $("#tb_upload").bootstrapTable("remove",{field:'plus_id',values:row.plus_id});
+                            }
+                            else{
+                                toastr.error("删除失败！");
+                            }
                         }
                     })
                 }
@@ -217,12 +266,16 @@ window.operateEvents = {
         $("#re_MatFor").val(row.plus_item_B);
         $("#re_MatScore").val(row.plus_point_submitted);
         $("#re_addModal").modal({backdrop:false});
+        $("#alter_form").validate();
+        $.cookie("presentRow",JSON.stringify(row));
+        $.cookie("presentIndex",index);
+        //修改材料表单提交
 
     },
     'click .RoleOfconfirm': function (e, value, row, index) {
         bootbox.confirm({
             size:"small",
-            message:"您确定要确认码，确认后将无法更改！",
+            message:"您确定要确认吗，确认后将无法更改！",
             callback:function (res) {
                 if (res){
                     $.ajax({
@@ -234,6 +287,17 @@ window.operateEvents = {
                             toastr.error("错误");
                         },
                         success:function (data) {
+                            data = JSON.parse(JSON.stringify(data));
+                            if (data['status']==1){
+                                toastr.success("确认成功");
+                                $("#tb_upload").bootstrapTable("updateCell",{
+                                    index:index,
+                                    field:'plus_state',
+                                    value:'已确认'
+                                })
+                            }else{
+                                toastr.error("确认失败");
+                            }
 
                         }
                     })
@@ -243,3 +307,34 @@ window.operateEvents = {
     }
 };
 //初始化表格和点击事件结束
+//是否能提交验证
+$(function () {
+    $.ajax({
+        url:"admin/deadline.php",
+        type:"post",
+        dataType:"json",
+        data:{action:1},
+        error:function () {
+            toastr.error("网络错误");
+        },
+        success:function (data) {
+            data = JSON.parse(JSON.stringify(data));
+            status = data['status'];
+            if (status == 2){
+                toastr.error("参数错误");
+            } else if (status == 1){
+                start = data['start'];
+                end = data['end'];
+                //需要测试
+                now = Date.parse(new Date())/1000;
+                if(now<start||now>end){
+                    $("#btn_addMat").hide();
+                    $("#tb_upload").hide();
+                    $("#matsubmit").append(
+                        "<p>当前截止日期已过</p>"
+                    )
+                }
+            }
+        }
+    })
+})

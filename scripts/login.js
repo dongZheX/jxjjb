@@ -58,6 +58,7 @@ $(function () {
                            $.cookie("jx_username",$("#jx_username").val(), { expires: 7 });
                            $.cookie("jx_password",$("#jx_psw").val(), { expires: 7 });
                        }
+                       $.cookie("present_jx_username",$("#jx_username").val(), { expires: 7 });
                        //登录成功后才生效
                        window.location="index.html";
                    }

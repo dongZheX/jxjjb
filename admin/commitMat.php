@@ -19,10 +19,11 @@ $dbname = getConfig("dbname");
 $dbconn = mysqli_connect($host,$username,$psw,$dbname);
 $result = array();
 //读取动作
-if(isset($_REQUEST['action']))$action = $_REQUEST['action'];else error(2);
+if(isset($_REQUEST['action']))$action = $_REQUEST['action'];else error(20);
 if(isset($_SESSION['username']))$class_id = $_SESSION['username'];else error(5);
 $date = $BeginDate = date('Ym', strtotime(date("Ym")));
 $name = date('YmdHis', strtotime(date("YmdHis")));
+$Time = time();
 //提交
 if ($action==1){
     if(isset($_REQUEST['MatName']))$MatName = $_REQUEST['MatName'];else error(2);
@@ -30,7 +31,6 @@ if ($action==1){
     if(isset($_REQUEST['MatScore']))$MatScore = $_REQUEST['MatScore'];else error(2);
     $a = json_decode(file_get_contents("../data/big_item.json"),true);
     $MatFor = array_search($MatFor,$a);
-    $Time = time();
     //处理文件
     if ($_FILES["MatMat"]["error"] > 0)
     {
@@ -85,6 +85,62 @@ elseif($action==2){
         $result[$count++] = $row;
     }
     echo json_encode($result);
+}
+//修改
+elseif ($action==3){
+    //修改
+    if(isset($_REQUEST['re_MatName']))$re_MatName = $_REQUEST['re_MatName'];else error(21);
+    //转换
+    if(isset($_REQUEST['re_MatFor']))$re_MatFor = $_REQUEST['re_MatFor'];else error(22);
+    $a = json_decode(file_get_contents("../data/big_item.json"),true);
+    $re_MatFor = array_search($re_MatFor,$a);
+    if(isset($_REQUEST['re_MatScore']))$re_MatScore = $_REQUEST['re_MatScore'];else error(23);
+    if(isset($_REQUEST['plus_id']))$plus_id = $_REQUEST['plus_id'];else error(24);
+    if(isset($_REQUEST['plus_Certificate']))$plus_Certificate = $_REQUEST['plus_Certificate'];else error(25);
+    $sql = "update pluses set plus_keywords='$re_MatName',plus_item_B='$re_MatFor',plus_point_submitted=$re_MatScore,class_timestamp=$Time ";
+    //修改文件
+    $re_insertdir="";
+    if (!empty($_FILES["re_MatMat"]["tmp_name"]))
+    {
+        $deleteDir = '../'.$plus_Certificate;
+        if (file_exists($deleteDir)){unlink($deleteDir);};
+        //插入修改文件
+        $classdir = "../MaterialData/$date/$date$class_id";
+        $typewf = $_FILES["re_MatMat"]["type"];
+        $back = substr(strrchr($_FILES["re_MatMat"]["name"], '.'), 1);
+        $name = $name.".".$back;
+        move_uploaded_file($_FILES["re_MatMat"]["tmp_name"],
+            "$classdir/$name");
+        $re_insertdir = "MaterialData/$date/$date$class_id/$name";
+        $sql = $sql.",plus_Certificate='$re_insertdir'";
+    }else $re_insertdir=$plus_Certificate;
+    $sql = $sql."where plus_id = '$plus_id' and class_id = '$class_id';";
+    $res = mysqli_query($dbconn,$sql);
+    //返回需要数据
+    if ($res==1){$result['status']=1;if ($re_insertdir)$result['plus_Certificate']=$re_insertdir; }
+    else $result['status']=4;
+    echo json_encode($result);
+}
+//确认
+elseif ($action==4){
+    if(isset($_REQUEST['plus_id']))$plus_id = $_REQUEST['plus_id'];else error(2);
+    $sql = "update pluses set plus_state='4',class_timestamp='$Time' where plus_id = '$plus_id' and class_id = '$class_id';";
+    $res = mysqli_query($dbconn,$sql);
+    if ($res==1){
+        $result['status']=1;
+    }
+    else
+        $result['status']=5;
+    echo json_encode($result);
+}
+//删除
+elseif ($action==5){
+    if(isset($_REQUEST['plus_id']))$plus_id = $_REQUEST['plus_id'];else error(2);
+    $sql = "delete from pluses where plus_id = $plus_id and class_id = $class_id;";
+    $res = mysqli_query($dbconn,$sql);
+    $res==1?$result['status']=1:$result['status']=2;
+    echo json_encode($result);
+
 }
 mysqli_close($dbconn);
 /*
