@@ -77,8 +77,8 @@
             <!--面板头-->
             <div class="panel-heading">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li role="presentation"><a href="#matsubmit" data-toggle="pill" class="active">提交材料</a></li>
-                    <li role="presentation"  class="active"><a href="#matSubmitted" data-toggle="pill" class="active">提交情况</a></li>
+                    <li role="presentation"  class="active"><a href="#matsubmit" data-toggle="pill" class="active">提交材料</a></li>
+                    <li role="presentation"><a href="#matSubmitted" data-toggle="pill" class="active">提交情况</a></li>
                 </ul>
             </div>
             <!--面板头结束-->
@@ -86,13 +86,13 @@
             <div class="panel-body">
                 <div class="tab-content">
                     <!--材料提交面板-->
-                    <div id="matsubmit" class="tab-pane">
+                    <div id="matsubmit" class="tab-pane active">
                         <button id="btn_addMat" type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-plus"></span> 添加
                         </button>
-                        <table id="tb_upload"></table>
+                        <table id="tb_upload" data-searchable="true"></table>
                     </div>
-                    <div id="matSubmitted" class="tab-pane active">
+                    <div id="matSubmitted" class="tab-pane ">
                         <!--//查询某班级-->
                         <div>
                             <form class="form-horizontal" id="submitted_form">
@@ -112,9 +112,8 @@
         </div>
     </div>
 
-</div>
 
-</body>
+
 <!--模拟框提交材料-->
 <form class="form-horizontal" role="form" id="commit_form">
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

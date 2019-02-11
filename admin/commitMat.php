@@ -12,6 +12,7 @@ date_default_timezone_set('PRC');
 session_start();
 //数据库初始化
 include("util.php");
+include ("alawaysSQL.php");
 $host =  getConfig("sqlHost");
 $psw = getConfig("sql_psw");
 $username = getConfig("sql_username");
@@ -54,7 +55,7 @@ if ($action==1){
     $subResult = array();
     $subResult['plus_Certificate'] = $insertdir;
     $subResult['plus_keywords'] = $MatName;
-    $subResult['plus_big_B'] = $_REQUEST['MatFor'];
+    $subResult['plus_item_B'] = $_REQUEST['MatFor'];
     $subResult['plus_point_submitted'] = $MatScore;
     $subResult['plus_id'] = $res;
     $subResult['plus_state'] = "未审核";
@@ -70,7 +71,6 @@ elseif($action==2){
     $count = 0;
     //important
     while ($row = mysqli_fetch_assoc($res)){
-        $subArray = array();
 //        $subResult['plus_id'] = $row['plus_id'];
 //        $subResult['plus_item_B'] = $row['plus_item_B'];
 //        if ($row['plus_audit_employee']!=null)$subResult['plus_audit_employee'] = getBigItem($row['plus_audit_employee']);
@@ -81,6 +81,7 @@ elseif($action==2){
 //        $subResult['plus_state'] = getPlusState($row['plus_state']);
         $row['plus_state'] = getPlusState($row['plus_state']);
         $row['plus_item_B'] = getBigItem($row['plus_item_B']);
+        $row['plus_audit_employee'] = getAuditName($row['plus_audit_employee']);
         $row=array_filter($row,create_function('$v','return !empty($v);'));
         $result[$count++] = $row;
     }
@@ -136,11 +137,13 @@ elseif ($action==4){
 //删除
 elseif ($action==5){
     if(isset($_REQUEST['plus_id']))$plus_id = $_REQUEST['plus_id'];else error(2);
+    if(isset($_REQUEST['plus_Certificate']))$plus_Certificate = $_REQUEST['plus_Certificate'];else error(25);
     $sql = "delete from pluses where plus_id = $plus_id and class_id = $class_id;";
     $res = mysqli_query($dbconn,$sql);
     $res==1?$result['status']=1:$result['status']=2;
+    $deleteDir = '../'.$plus_Certificate;
+    if (file_exists($deleteDir)){unlink($deleteDir);};
     echo json_encode($result);
-
 }
 mysqli_close($dbconn);
 /*

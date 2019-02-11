@@ -1,35 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>审核</title>
-    <!--用百度的静态资源库的cdn安装bootstrap环境-->
-    <!-- Bootstrap 核心 CSS 文件 -->
-    <link href="styles/bootstrap.min.css" rel="stylesheet">
-    <!--font-awesome 核心我CSS 文件-->
-    <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles/toastr.css">
-    <!-- 在bootstrap.min.js 之前引入 -->
-    <script src="scripts/jquery-3.3.1.min.js"></script>
-    <!-- Bootstrap 核心 JavaScript 文件 -->
-    <script src="scripts/bootstrap.min.js"></script>
-    <script src="scripts/jquery.cookie.js"></script>
-    <!--jquery.validate-->
-    <script type="text/javascript" src="scripts/jquery.validate.js" ></script>
-    <script type="text/javascript" src="scripts/jquery.validate.messages_cn.js"></script>
-    <script src="scripts/bootbox.min.js"></script>
-    <script src="scripts/toastr.js"></script>
-    <script src="scripts/loginCheck.js"></script>
-    <script src="scripts/index.js"></script>
-    <script src="scripts/refresh_date.js"></script>
-    <link rel="stylesheet" href="styles/home.css"/>
-    <style>
-        a:hover{
-            text-decoration: none;
-        }
-    </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="json/html; charset=UTF-8"/>
+        <title>审核</title>
+        <!--用百度的静态资源库的cdn安装bootstrap环境-->
+        <!-- Bootstrap 核心 CSS 文件 -->
+        <link href="styles/bootstrap.min.css" rel="stylesheet">
+        <!--font-awesome 核心我CSS 文件-->
+        <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="styles/toastr.css">
+        <link rel="stylesheet" href="styles/bootstrap-table.min.css">
+        <!-- 在bootstrap.min.js 之前引入 -->
+        <script src="scripts/jquery.js"></script>
+        <script src="scripts/jquery.thickbox.js"></script>
+        <link rel="stylesheet" href="styles/thickbox.css">
+        <script src="scripts/jquery-3.3.1.min.js"></script>
+        <!-- Bootstrap 核心 JavaScript 文件 -->
+        <script src="scripts/bootstrap.min.js"></script>
+        <script src="scripts/jquery.cookie.js"></script>
+        <script src="scripts/jquery-migrate-1.2.1.js"></script>
+        <!--jquery.validate-->
+        <script type="text/javascript" src="scripts/jquery.validate.js"></script>
+        <script type="text/javascript" src="scripts/jquery.validate.messages_cn.js"></script>
+        <script src="scripts/bootstrap-table.min.js"></script>
+        <script src="scripts/bootstrap-table-zh-CN.min.js"></script>
+        <script src="scripts/bootbox.min.js"></script>
+        <script src="scripts/toastr.js"></script>
+        <script src="scripts/jquery.media.js"></script>
+        <script src="scripts/loginCheck.js"></script>
+        <script src="scripts/checkMat.js"></script>
+        <style>
+            a:hover {
+                text-decoration: none;
+            }
+        </style>
 </head>
 <body>
-
+<!--导航栏-->
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#navbarcol">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">定级评优</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarcol">
+            <ul class="nav navbar-nav">
+                <li style="margin-left: 10px"><a href="index.html"><span class="glyphicon glyphicon-home"
+                                                                         style="margin-right: 5px"></span>首页</a></li>
+                <li style="margin-left: 10px;display:none"><a href="submitMat.html"><span
+                        class="glyphicon glyphicon-subscript" style="margin-right: 5px"></span>材料提交</a></li>
+                <li class="active" style="margin-left: 10px;display:none"><a href="checkMat.html"><span
+                        class="glyphicon glyphicon-search" style="margin-right: 5px"></span>材料审核</a></li>
+                <li style="margin-left: 10px"><a href="#"><span class="glyphicon glyphicon-check"
+                                                                style="margin-right: 5px">查询</a></li>
+            </ul>
+            <ul class="nav navbar-right navbar-nav">
+                <li><a id="a_user_tag" href="#" data-toggle="popover"><span class="glyphicon glyphicon-user"
+                                                                            style="margin-right: 5px"></span>我的</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--导航栏结束-->
+<div class="container-fluid" style="margin-top: 80px">
+    <!--面板-->
+    <div class="tab-pane active" id="panel_Sub">
+        <div class="panel panel-default">
+            <!--面板头-->
+            <div class="panel-heading">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li role="presentation" class="active"><a href="#checksubmit" data-toggle="pill"
+                                                              class="active">审核材料</a></li>
+                </ul>
+            </div>
+            <!--面板头结束-->
+            <!--面板主体-->
+            <div class="panel-body">
+                <div class="tab-content">
+                    <!--材料提交面板-->
+                    <div id="checksubmit" class="tab-pane active">
+                        <!--//查询某班级-->
+                        <div>
+                            <form class="form-horizontal" id="check_form_select">
+                                <p style="display: inline">&nbsp&nbsp&nbsp年级&nbsp:&nbsp</p><select id="select_y_c"></select>
+                                <p style="display: inline">&nbsp&nbsp&nbsp专业&nbsp:&nbsp</p><select id="select_m_c"></select>
+                                <p style="display: inline">&nbsp&nbsp&nbsp班级&nbsp:&nbsp</p><select
+                                    id="select_class_c"></select>
+                                <p style="display: inline">&nbsp&nbsp&nbsp审核情况&nbsp:&nbsp</p><select
+                                    id="select_state_c"></select>
+                                <input type="button" class="btn btn-default" style="margin-left: 20px;"
+                                       id="check_btn" value="查询">
+                            </form>
+                        </div>
+                        <table id="tb_check" data-searchable="true"></table>
+                    </div>
+                </div>
+                <!--材料提交面板结束-->
+            </div>
+        </div>
+        <!--面板主题结束-->
+    </div>
+</div>
+<!--模拟框提交材料-->
+<form class="form-horizontal" role="form" id="check_form">
+    <div class="modal fade" id="check_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel_t">审核加分项</h4>
+                </div>
+                <div class="modal-body" style="margin: auto 40px">
+                    <!--材料大项-->
+                    <div class="form-group">
+                        <label for="ckMatFor_B" class="">选择大项:</label>
+                        <select id="ckMatFor_B" name="ckMatFor_B" class="form-control col-lg-4">
+                            <option>思政建设</option>
+                            <option>新媒体建设</option>
+                            <option>学风建设</option>
+                            <option>学风建设</option>
+                            <option>纪律及制度建设</option>
+                            <option>科技创新</option>
+                            <option>实践及志愿服务</option>
+                            <option>校园文化活动</option>
+                            <option>班级活动</option>
+                            <option>宿舍情况</option>
+                            <option>其他</option>
+                        </select>
+                    </div>
+                    <!--材料小项-->
+                    <div class="form-group">
+                        <label for="ckMatFor" class="">选择小项:</label>
+                        <select id="ckMatFor" name="ckMatFor" class="form-control col-lg-4">
+                        </select>
+                    </div>
+                    <p style="color:red;margin-left: 0">注意:请为加分项选择小项</p>
+                    <!--材料实加分-->
+                    <div class="form-group">
+                        <label for="ckMatScore" class="">实加分&#58;</label>
+                        <input id="ckMatScore" type="text" name="ckMatScore" class="form-control col-lg-4 required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="ckMatScore" class="">审核描述&#58;</label>
+                        <textarea id="ckMatDes" type="text" name="ckMatDes" class="form-control col-lg-4 required" style="resize: none" rows="5"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button  class="btn btn-default" id="MatCheck">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</form>
 </body>
+
 </html>

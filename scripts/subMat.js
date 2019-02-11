@@ -48,7 +48,6 @@ $(function () {
                                         "plus_audit_note":row.plus_audit_note,
                                         "plus_audit_employee":row.plus_audit_employee
                                     };
-                                    console.log(datat);
                                     $("#tb_upload").bootstrapTable("updateRow",{index:index,row:datat});
                                     // row.plus_Certificate = data['plus_Certificate'];
                                     // row.plus_state = "未审核";
@@ -69,7 +68,7 @@ $(function () {
             });
         }
         return false;
-    })
+    });
     //提交材料表单提交
     $("#commit_form").submit(function () {
         if($("#commit_form").valid()){
@@ -104,8 +103,9 @@ $(function () {
                                             plus_Certificate:data['plus_Certificate'],
                                             plus_id:data['plus_id'],
                                             plus_keywords:data['plus_keywords'],
-                                            plus_big_B:data['plus_big_B'],
-                                            plus_point_submitted:data['plus_point_submitted']
+                                            plus_item_B:data['plus_item_B'],
+                                            plus_point_submitted:data['plus_point_submitted'],
+                                            plus_state:"未审核"
                                         }
                                     };
                                     $("#tb_upload").bootstrapTable("insertRow",newdata);
@@ -166,7 +166,8 @@ let TableInit = function () {
                 field: 'plus_keywords',
                 title: '材料名',
                 align:"center",
-                valign:"middle"
+                valign:"middle",
+                searchable:true
             }, {
                 field: 'plus_item_B',
                 title: '所属大项',
@@ -186,7 +187,21 @@ let TableInit = function () {
                 field: 'plus_state',
                 title: '审核状态',
                 align:"center",
-                valign:"middle"
+                valign:"middle",
+                formatter:function (value,row,index) {
+                    if (row.plus_state=="未审核"){
+                        return '<p><span class="glyphicon glyphicon-upload"></span>未审核</p>'
+                    }
+                    else if(row.plus_state=="审核通过"){
+                        return '<p style="color: mediumseagreen;"><span class="glyphicon glyphicon-ok-circle"></span>审核通过</p>'
+                    }
+                    else if(row.plus_state=="审核未通过"){
+                        return '<p style="color: darkred;"><span class="glyphicon glyphicon-remove-circle"></span>审核未通过</p>'
+                    }
+                    else if(row.plus_state=="已确认"){
+                        return '<p style="color: black;"><span class="glyphicon glyphicon-ban-circle"></span>已确认</p>'
+                    }
+                }
             },{
                 field: 'plus_audit_note',
                 title: '审核描述',
@@ -201,6 +216,7 @@ let TableInit = function () {
                 field: 'plus_Certificate',
                 title: '证明材料',
                 valign:"middle",
+                align:"center",
                 formatter: function(value,row,index){
                     hz = row.plus_Certificate.split(".")[1];
                     if(hz=="jpg"||hz=="png"||hz=="gif")
@@ -226,13 +242,17 @@ let TableInit = function () {
 };
 function operateFormatter(value, row, index) {
     return [
-        '<button type="button" class="RoleOfdelete btn btn-link  btn-sm" style="margin-right:5px;">删除</button>',
-        '<button type="button" class="RoleOfedit btn btn-link  btn-sm" style="margin-right:5px;">修改</button>',
-        '<button type="button" class="RoleOfconfirm btn btn-link  btn-sm" style="margin-right:5px;">确认</button>'
+        '<button type="button" class="RoleOfdelete btn btn-link">删除</button>',
+        '<button type="button" class="RoleOfedit btn btn-link">修改</button>',
+        '<button type="button" class="RoleOfconfirm btn btn-link">确认</button>'
     ].join('');
 }
 window.operateEvents = {
     'click .RoleOfdelete': function (e, value, row, index) {
+        if(row.plus_state=="已确认"){
+            toastr.info("已确认，无法删除");
+            return;
+        }
         bootbox.confirm({
             size:"small",
             message:"您确定要删除码，删除后将无法撤销！",
@@ -242,7 +262,7 @@ window.operateEvents = {
                         url:"admin/commitMat.php?action=5",
                         type:"post",
                         dataType:"json",
-                        data:{action:"5",plus_id:row.plus_id},
+                        data:{action:"5",plus_id:row.plus_id,plus_Certificate:row.plus_Certificate},
                         error:function () {
                             toastr.error("错误");
                         },
@@ -262,6 +282,10 @@ window.operateEvents = {
         })
     },
     'click .RoleOfedit': function (e, value, row, index) {
+        if(row.plus_state=="已确认"){
+            toastr.info("已确认，无法修改");
+            return;
+        }
         $("#re_MatName").val(row.plus_keywords);
         $("#re_MatFor").val(row.plus_item_B);
         $("#re_MatScore").val(row.plus_point_submitted);
@@ -337,4 +361,4 @@ $(function () {
             }
         }
     })
-})
+});
