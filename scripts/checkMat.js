@@ -90,13 +90,13 @@ $(function () {
 });
 function InitSelect() {
     //这个初始化要改
-    let username = "20160802";
+    let username = "20160101";
     let select_y = $("#select_y_c");
     let select_m = $("#select_m_c");
     let select_class = $("#select_class_c");
     let select_state = $("#select_state_c");
     let now_Y = new Date().getFullYear();
-    let now_m = new Date().getMonth();
+    let now_m = new Date().getMonth()+1;
     if (now_m<9) select_y.append("<option>"+now_Y-1+"</option>"+ "<option>"+(now_Y-2)+"</option>"+ "<option>"+(now_Y-3)+"</option>");
     else select_y.append("<option>"+now_Y+"</option>"+ "<option>"+(now_Y-1)+"</option>"+ "<option>"+(now_Y-2)+"</option>")
 
@@ -123,7 +123,6 @@ function InitSelect() {
         //假设设置
         select_y.val(username.substring(0,4));
         select_class.val(username.substring(6,8));
-        $("#check_btn").click();
     });
 
 }

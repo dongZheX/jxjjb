@@ -1,51 +1,106 @@
 $(function () {
-    $("#submitted_btn").click(function () {
-        $("#tb_submitted").bootstrapTable("refresh",{
-            url:"admin/submitted_select.php"
-        });
+    InitselectIf();
+    let ot = new TableInits1();
+    ot.Init();
+    $("#select1_btn").click(function () {
+        $("#tb_select1").bootstrapTable("refresh",{
+            url:"admin/select_add_1.php"
+        })
     });
-    InitSelect();
-    let s_t = new TableInits();
-    s_t.Init();
-    $('#tb_submitted').on('post-body.bs.table', function (e, arg1, arg2){
+    $('#tb_select1').on('post-body.bs.table', function (e, arg1, arg2){
         tb_init('a.thickbox, area.thickbox, input.thickbox');
     });
 });
-function InitSelect() {
-    let username = "20160201";
-    let select_y = $("#select_y");
-    let select_m = $("#select_m");
-    let select_class = $("#select_class");
+//初始化搜索
+function InitselectIf() {
+    //这个初始化要改
+    let username = "20160101";
+    let select_y = $("#select_y_s1");
+    let select_m = $("#select_m_s1");
+    let select_year = $("#select_year_s1");
+    let select_mon = $("#select_mon_s1");
+    let select_class = $("#select_class_s1");
+    let select_state = $("#select_state_s1");
     let now_Y = new Date().getFullYear();
     let now_m = new Date().getMonth()+1;
-    if (now_m<9) select_y.append("<option>"+now_Y-1+"</option>"+ "<option>"+(now_Y-2)+"</option>"+ "<option>"+(now_Y-3)+"</option>");
-    else select_y.append("<option>"+now_Y+"</option>"+ "<option>"+(now_Y-1)+"</option>"+ "<option>"+(now_Y-2)+"</option>")
-
+    //初始化年级
+    if (now_m<9) select_y.html("<option>全部</option><option>"+(now_Y-1)+"</option>"+ "<option>"+(now_Y-2)+"</option>"+ "<option>"+(now_Y-3)+"</option>");
+    else select_y.html("<option>全部</option><option>"+now_Y+"</option>"+ "<option>"+(now_Y-1)+"</option>"+ "<option>"+(now_Y-2)+"</option>");
+    //初始化专业
     $.getJSON("data/major_id.json",function (data) {
         data = JSON.parse(JSON.stringify(data));
         let appended = "";
+        select_m.append("<option>全部</option>");
+        console.log(Object.values(data));
         Object.values(data).forEach(function (value) {
             appended = appended +  "<option>"+value+"</option>";
         });
         select_m.append(appended);
-        select_m.val(data[username.substring(4,6)]);
+        select_m.val("全部");
         select_class.append(
+            "<option>全部</option>"+
             "<option>01</option>"+
             "<option>02</option>"
         );
+        select_state.append(
+            "<option>全部</option>"+
+            "<option>未审核</option>"+
+            "<option>审核未通过</option>"+
+            "<option>审核通过</option>"+
+            "<option>已确认</option>"
+        );
         //假设设置
-        select_y.val(username.substring(0,4));
-        select_class.val(username.substring(6,8));
-        $("#submitted_btn").click();
+        select_y.val("全部");
+        select_class.val("全部");
     });
-
+    //初始化时间
+    if(now_m<=12&&now_m>=9){
+        select_year.append('<option>'+now_Y+'</option>'+'<option>'+(now_Y-1)+'</option>')
+        select_year.val(now_Y);
+        for(let i=1;i<=now_m;i++)select_mon.append('<option>'+i+'</option>');
+        select_mon.val(now_m);
+        select_year.change(function () {
+            if(select_year.val()==(now_Y-1)){
+                select_mon.html("");
+                for(let i=9;i<=12;i++)select_mon.append('<option>'+i+'</option>');
+                select_mon.val("9");
+            }else {
+                select_mon.html("");
+                for(let i=1;i<=now_m;i++)select_mon.append('<option>'+i+'</option>');
+                select_mon.val(now_m);
+            }
+        })
+    }else{
+        select_year.append('<option>'+now_Y+'</option>'+'<option>'+(now_Y-1)+'</option>'+'<option>'+(now_Y-2)+'</option>')
+        select_year.val(now_Y);
+        for(let i=1;i<=now_m;i++)select_mon.append('<option>'+i+'</option>');
+        select_mon.val(now_m);
+        select_year.change(function () {
+            if(select_year.val()==((now_Y-1))){
+                select_mon.html("");
+                for(let i=1;i<=12;i++)select_mon.append('<option>'+i+'</option>');
+                select_mon.val("1");
+            }else if(select_year.val()==((now_Y))){
+                select_mon.html("");
+                for(let i=1;i<=now_m;i++)select_mon.append('<option>'+i+'</option>');
+                select_mon.val(now_m);
+            }else{
+                select_mon.html("");
+                for(let i=9;i<=12;i++)select_mon.append('<option>'+i+'</option>');
+                select_mon.val("9");
+            }
+        })
+    }
 }
-let TableInits = function () {
-    let oTableInits = new Object();
+//初始化表格
+//初始化表格和点击事件
+let TableInits1 = function () {
+    let oTableInitc = new Object();
     //初始化Table
-    oTableInits.Init = function () {
-        $('#tb_submitted').bootstrapTable({
-            data:"",
+    oTableInitc.Init = function () {
+        $('#tb_select1').bootstrapTable({
+            contentType: "application/x-www-form-urlencoded",
+            url:"",
             method: 'get',                      //请求方式（*）
             toolbar: '#toolbar',                //工具按钮用哪个容器
             striped: true,                      //是否显示行间隔色
@@ -53,9 +108,9 @@ let TableInits = function () {
             pagination: true,                   //是否显示分页（*）
             sortable: true,                     //是否启用排序
             sortOrder: "asc",                   //排序方式
-            sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
             pageNumber:1,                       //初始化加载第一页，默认第一页
-            pageSize: 6,                       //每页的记录行数（*）
+            pageSize: 9,                       //每页的记录行数（*）
             pageList: [4, 5, 6,8,9],        //可供选择的每页的行数（*）
             search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
             strictSearch: true,
@@ -64,15 +119,23 @@ let TableInits = function () {
             minimumCountColumns: 2,             //最少允许的列数
             clickToSelect: true,                //是否启用点击选中行
             height: 700,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-            uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+            uniqueId: "plus_id",                     //每一行的唯一标识，一般为主键列
             showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: false,                   //是否显示父子表
-            queryParams:function(){
+            queryParamsType:"",
+            queryParams:function(params){
                 return {
-                    "select_y":$("#select_y").val(),
-                    "select_m":$("#select_m").val(),
-                    "select_class":$("#select_class").val(),
+                    "select_y":$("#select_y_s1").val(),
+                    "select_m":$("#select_m_s1").val(),
+                    "select_class":$("#select_class_s1").val(),
+                    "select_state":$("#select_state_s1").get(0).selectedIndex,
+                    "select_year":$("#select_year_s1").val(),
+                    "select_mon":$("#select_mon_s1").val(),
+                    "select_key":$("#select1_key").val(),
+                    "select_item_b":$("#select1_itemB").get(0).selectedIndex,
+                    "offset":params.pageNumber,
+                    "size":params.pageSize,
                     "action":1
                 };
             },
@@ -83,10 +146,21 @@ let TableInits = function () {
                 field: 'plus_keywords',
                 title: '材料名',
                 align:"center",
-                valign:"middle"
+                valign:"middle",
+                searchable:true
             }, {
+                field: 'class_id',
+                title: '班级名',
+                align:"center",
+                valign:"middle"
+            },{
                 field: 'plus_item_B',
                 title: '所属大项',
+                align:"center",
+                valign:"middle"
+            }, {
+                field: 'plus_item_S',
+                title: '所属小项',
                 align:"center",
                 valign:"middle"
             }, {
@@ -117,13 +191,12 @@ let TableInits = function () {
                     else if(row.plus_state=="已确认"){
                         return '<p style="color: black;"><span class="glyphicon glyphicon-ban-circle"></span>已确认</p>'
                     }
-                },
+                }
             },{
                 field: 'plus_audit_note',
                 title: '审核描述',
                 align:"center",
-                valign:"middle",
-
+                valign:"middle"
             }, {
                 field: 'plus_audit_employee',
                 title: '审核人',
@@ -142,8 +215,9 @@ let TableInits = function () {
                         return '<a class="media" href="'+row.plus_Certificate+'">点我下载'+hz+'</a>';
                     }
                 },
-            }]
+            }],
+
         });
     };
-    return oTableInits;
+    return oTableInitc;
 };

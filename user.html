@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="json/html; charset=UTF-8"/>
+    <title>用户中心</title>
+    <!--用百度的静态资源库的cdn安装bootstrap环境-->
+    <!-- Bootstrap 核心 CSS 文件 -->
+    <link href="styles/bootstrap.min.css" rel="stylesheet">
+    <!--font-awesome 核心我CSS 文件-->
+    <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/toastr.css">
+    <link rel="stylesheet" href="styles/bootstrap-table.min.css">
+    <!-- 在bootstrap.min.js 之前引入 -->
+    <script src="scripts/jquery.js"></script>
+    <script src="scripts/jquery.thickbox.js"></script>
+    <link rel="stylesheet" href="styles/thickbox.css">
+    <script src="scripts/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap 核心 JavaScript 文件 -->
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/jquery.cookie.js"></script>
+    <script src="scripts/jquery-migrate-1.2.1.js"></script>
+    <script src="scripts/user.js"></script>
+    <!--jquery.validate-->
+    <script type="text/javascript" src="scripts/jquery.validate.js"></script>
+    <script type="text/javascript" src="scripts/jquery.validate.messages_cn.js"></script>
+    <script src="scripts/bootbox.min.js"></script>
+    <script src="scripts/toastr.js"></script>
+    <script src="scripts/loginCheck.js"></script>
+    <style>
+        a:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#navbarcol">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">定级评优</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarcol">
+            <ul class="nav navbar-nav">
+                <li style="margin-left: 10px"><a href="index.html"><span class="glyphicon glyphicon-home"
+                                                                         style="margin-right: 5px"></span>首页</a></li>
+                <li style="margin-left: 10px;display:none"><a href="submitMat.html"><span
+                        class="glyphicon glyphicon-subscript" style="margin-right: 5px"></span>材料提交</a></li>
+                <li style="margin-left: 10px;display:none"><a href="checkMat.html"><span
+                        class="glyphicon glyphicon-search" style="margin-right: 5px"></span>材料审核</a></li>
+                <li  style="margin-left: 10px"><a href="select.html"><span class="glyphicon glyphicon-check"
+                                                                                          style="margin-right: 5px">查询</a></li>
+                <li class="dropdown" style="margin-left: 10px;display: none">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                            class="glyphicon glyphicon-tower" style="margin-right: 5px"></span>
+                        功能中心 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">设置定级评优日期</a></li>
+                        <li><a href="#">导入加分项</a></li>
+                        <li><a href="#">我审核的</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-right navbar-nav">
+                <li><a id="a_user_tag" href="user.html" data-toggle="popover"><span class="glyphicon glyphicon-user"
+                                                                            style="margin-right: 5px"></span>我的</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid col-lg-8 col-lg-offset-2" style="margin-top: 100px;">
+    <h1>个人设置</h1>
+    <br>
+    <ul id="myTab" class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#bulletin" role="tab" data-toggle="tab">个人资料</a></li>
+        <li ><a href="#changpass" role="tab" data-toggle="tab">修改密码</a></li>
+    </ul>
+    <!-- 选项卡面板 -->
+    <div id="myTabContent" class="tab-content" >
+        <div class="tab-pane active" id="bulletin" >
+            <div class="panel" style="border-top: none">
+                <div class="panel-body text-center">
+                    <div class="form-group col-lg-4" style="margin-top: 20px">
+                        <label for="name" class="col-lg-3 text-center" style="padding-top: 7px;">名字:</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control " id="name" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4" style="margin-top: 20px">
+                        <label for="dept" class="col-lg-3 text-center" style="padding-top: 7px;">所属:</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control " id="dept" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4" style="margin-top: 20px">
+                        <label id="tel_label" for="tel" class="col-lg-5 text-center" style="padding-top: 7px;">电话(双击修改):</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control " id="tel" readonly="readonly" style="display: inline">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="changpass" >
+            <div class="panel" style="border-top: none">
+                <div class="panel-body text-center">
+                    <div class="form-group col-lg-4" style="margin-top: 20px">
+                        <label for="name" class="col-lg-3 text-center" style="padding-top: 7px;">旧密码:</label>
+                        <div class="col-lg-7">
+                            <input type="password" class="form-control " id="old_pass" >
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4" style="margin-top: 20px">
+                        <label for="dept" class="col-lg-3 text-center" style="padding-top: 7px;">新密码:</label>
+                        <div class="col-lg-7">
+                            <input type="password" class="form-control " id="new_pass">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4" style="margin-top: 20px">
+                        <label for="tel" class="col-lg-5 text-center" style="padding-top: 7px;">确认新密码:</label>
+                        <div class="col-lg-7">
+                            <input type="password" class="form-control " id="new_pass_conf"  style="display: inline">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="btn_changpass" style="margin-top: 20px">修改密码</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

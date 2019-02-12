@@ -24,6 +24,7 @@ $(function () {
                     $("#a_user_tag").prop("title","团学组织");
                     $("#navbarcol ul li").eq(2).show();
                     $("#edit").show();
+                    $("#navbarcol ul li").eq(4).show();
                     //防止用户输入url
                     if(window.location.toString().split("/")[3]=="submitMat.html"){
                         bootbox.alert({
