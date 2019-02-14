@@ -11,6 +11,8 @@
     <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles/toastr.css">
     <link rel="stylesheet" href="styles/bootstrap-table.min.css">
+    <link rel="stylesheet" href="styles/jquery-ui-timepicker-addon.min.css">
+    <link rel="stylesheet" href="styles/jquery-ui.min.css">
     <!-- 在bootstrap.min.js 之前引入 -->
     <script src="scripts/jquery.js"></script>
     <script src="scripts/jquery.thickbox.js"></script>
@@ -28,6 +30,9 @@
     <script src="scripts/bootbox.min.js"></script>
     <script src="scripts/toastr.js"></script>
     <script src="scripts/jquery.media.js"></script>
+    <script src="scripts/jquery-ui.min.js"></script>
+    <script src="scripts/jquery-ui-timepicker-addon.min.js"></script>
+    <script src="scripts/jquery-ui-timepicker-zh-CN.js"></script>
     <script src="scripts/loginCheck.js"></script>
     <script src="scripts/functionCenter.js"></script>
     <style>
@@ -98,6 +103,29 @@
                 <p>
                     <a class="btn btn-success btn-large" href="model/卫生表模板.xls" style="margin-left: 10px">下载模板</a>
                     <a class="btn btn-success btn-large" id="import_ws_much" style="margin-left: 10px">导入</a>
+                </p>
+            </div>
+            <!--截止日期选择-->
+            <div class="span4 jumbotron" style="float: left;margin-left: 20px">
+                <h2>选择开始截止日期</h2>
+                <p>说明：如果未设置默认为本月第一</p>
+                <p>天到最后一天.请根据部门要求设置</p>
+                <p>合理的日期.如果出现问题请及时</p>
+                <p>联系管理员</p>
+                <!--危险操作多重判断权限-->
+                <p>
+                    <a class="btn btn-success btn-large" id="set_date" style="margin-left: 10px">设置</a>
+                </p>
+            </div>
+            <div class="span4 jumbotron" style="float: left;">
+                <h2>添加规章制度扣分项</h2>
+                <p>说明：本功能完成每月班级在课堂</p>
+                <p>各活动出勤情况的 扣分，由固定人</p>
+                <p>员添加即可，提交前请仔细检查</p>
+                <p>出现问题请联系管理员</p>
+                <!--危险操作多重判断权限-->
+                <p>
+                    <a class="btn btn-success btn-large" id="btn_kf" style="margin-left: 10px">添加</a>
                 </p>
             </div>
 
@@ -188,6 +216,87 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button  class="btn btn-default" id="FileSub_2">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</form>
+<!--模拟框设置日期-->
+<form class="form-horizontal" role="form" id="addDate">
+    <div class="modal fade" id="date_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabeld" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabeld">设置截止日期</h4>
+                </div>
+                <div class="modal-body" style="margin: auto 40px">
+                    <div class="form-group">
+                        <label for="start_date" class="">开始时间:</label>
+                        <input id="start_date" type="text" name="start_date" class=" form-control col-lg-4 required"/>
+                    </div>
+                </div>
+                <div class="modal-body" style="margin: auto 40px">
+                    <div class="form-group">
+                        <label for="end_date" class="">截止时间:</label>
+                        <input id="end_date" type="text" name="end_date" class="form-control col-lg-4 required"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button  class="btn btn-default" id="date_sub">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</form>
+<!--模拟框添加扣分项-->
+<form class="form-horizontal" role="form" id="ruleMat_form">
+    <div class="modal fade" id="ruleMat_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabelr" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabelr">设置扣分项</h4>
+                </div>
+                <div class="modal-body" style="margin: auto 40px">
+                    <div class="form-group">
+                        <label for="rule_name" class="">扣分原因:</label>
+                        <input id="rule_name" type="text" name="rule_name" class=" form-control col-lg-4 required" placeholder="表明原因人数"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="rule_item" class="">扣分原因分类</label>
+                        <select id="rule_item" name="rule_item" class="form-control col-lg-4 required">
+                            <option>会议出勤和材料上交</option>
+                            <option>课堂考勤</option>
+                            <option>学校、学院处分</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label  class="">班级选择：</label>
+                        <p style="display: inline">&nbsp&nbsp&nbsp年级&nbsp:&nbsp</p><select id="rule_y" name="rule_y"></select>
+                        <p style="display: inline">&nbsp&nbsp&nbsp专业&nbsp:&nbsp</p><select id="rule_m" name="rule_m">
+                        <option>计算机</option><option>软件</option><option>数媒</option>
+                        <option>计算机合</option><option>测控</option><option>机械</option>
+                        <option>机械合</option><option>通信</option><option>电子</option>
+                        <option>材料</option><option>自动化
+                    </select>
+                        <p style="display: inline">&nbsp&nbsp&nbsp班级&nbsp:&nbsp</p><select id="rule_class" name="rule_class">
+                        <option>01</option><option>02</option><option>03</option>
+                    </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rule_score" class="">应扣分数:</label>
+                        <input id="rule_score" type="text" name="rule_score" class=" form-control col-lg-4 required" placeholder="输入应扣分数"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="rule_file" class="">证明材料:</label>
+                        <input id="rule_file" type="file" name="rule_file" class=" form-control col-lg-4 required"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button  class="btn btn-default" id="rule_sub">提交</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->

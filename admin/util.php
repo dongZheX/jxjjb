@@ -37,3 +37,8 @@ function getPlusState($item){
     elseif ($item==3){return "审核通过";}
     elseif ($item==4){return "已确认";}
 }
+function getCap($item){
+    $data = json_decode(file_get_contents("../data/cap.json"),true);
+    if(isset($data[$item])) return $data[$item];
+    else return 0;
+}

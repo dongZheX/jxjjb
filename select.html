@@ -25,12 +25,15 @@
     <script type="text/javascript" src="scripts/jquery.validate.messages_cn.js"></script>
     <script src="scripts/bootstrap-table.min.js"></script>
     <script src="scripts/bootstrap-table-zh-CN.min.js"></script>
+    <script src="scripts/bootstrap-table-export.js"></script>
+    <script src="scripts/tableExport.js"></script>
     <script src="scripts/bootbox.min.js"></script>
     <script src="scripts/toastr.js"></script>
     <script src="scripts/jquery.media.js"></script>
     <script src="scripts/loginCheck.js"></script>
     <script src="scripts/select_2.js"></script>
     <script src="scripts/select.js"></script>
+    <script src="scripts/table.js"></script>
     <style>
         a:hover{
             text-decoration: none;
@@ -82,6 +85,8 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li role="presentation" class="active"><a href="#select1" data-toggle="pill"
                                                               class="active">加分项查询</a></li>
+                    <li role="presentation" ><a href="#select3" data-toggle="pill"
+                                                class="active">汇总表查询</a></li>
                     <li role="presentation" ><a href="#select2" data-toggle="pill"
                                                               class="active">通讯录</a></li>
                 </ul>
@@ -90,7 +95,7 @@
             <!--面板主体-->
             <div class="panel-body">
                 <div class="tab-content">
-                    <!--材料提交面板-->
+                    <!--加分项查询面板-->
                     <div id="select1" class="tab-pane  active">
                         <!--//查询某班级-->
                         <div>
@@ -127,9 +132,49 @@
                             </form>
                         </div>
                         <!--表格-->
-                        <table id="tb_select1" style="table-layout: fixed"></table>
+                        <table id="tb_select1" style="table-layout: auto"></table>
                     </div>
                     <!--材料提交面板结束-->
+                    <!--汇总表查询面板开始-->
+                    <div id="select3" class="tab-pane">
+                        <div class="panel-body" style="padding-bottom:0px;">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">查询条件</div>
+                                <div class="panel-body">
+                                    <form id="formSearch" class="form-horizontal" action="admin/table.php">
+                                        <label for="select_Y" style="float: left;margin-left:30px">时间段:</label>
+                                        <select id="select_Y" style="float: left;margin-left: 10px"
+                                                onchange="set_month();set_isTop()">
+                                        </select>
+                                        <label for="select_Y" style="float: left;margin-left:30px">月份:</label>
+                                        <select id="select_M" style="float: left;margin-left:10px"
+                                                onchange="set_isTop()">
+                                            <option>请选择</option>
+                                        </select>
+                                        <label style="float: left;margin-left:30px" for="select_G">年级:</label>
+                                        <select id="select_G" style="float: left;margin-left:10px">
+                                            <option>请选择</option>
+                                        </select>
+                                        <label style="float: left;margin-left:30px" for="select_T">是否封顶:</label>
+                                        <select id="select_T" style="float: left;margin-left:10px">
+                                            <option>是</option>
+                                            <option>否</option>
+                                        </select>
+                                        <button type="button" style="float:left;margin-left:30px;margin-top: -5px"
+                                                id="btn_query"
+                                                class="btn btn-primary">查询
+                                        </button>
+                                    </form>
+                                    <table id="tb_departments" style="table-layout: auto;">
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+
+                    <!--汇总表查询面板结束-->
                     <!--通讯录界面开始-->
                     <div id="select2" class="tab-pane">
                         <!--查询界面-->
@@ -156,6 +201,7 @@
                         </div>
                         <table id="tb_txl"></table>
                     </div>
+                    <!--通讯录面板结束-->
                 </div>
 
             </div>

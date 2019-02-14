@@ -22,24 +22,24 @@ if ($action==1){
         $result['start'] = strtotime($start);
     }else{
         //检测是否合法
-        if($data['start']<$start or $data['start']>$end){
+        if($data['start']<strtotime($start) ){
             $result['start'] = strtotime($start);
             $data['start'] = 0;
         }
         else{
-            $result['start'] = strtotime($data['start']);
+            $result['start'] = $data['start'];
         }
     }
     if($data['end']==0){
         $result['end'] = strtotime($end);
     }else{
         //检测是否合法
-        if($data['end']<$start or $data['end']>$end){
+        if($data['end']<strtotime($start)){
             $result['end'] = strtotime($end);
             $data['end'] = 0;
         }
         else{
-            $result['end'] =  strtotime($data['end']);
+            $result['end'] =  $data['end'];
         }
     }
     $result["status"] = 1;
@@ -54,6 +54,7 @@ elseif($action==2){
     $data['end'] = $e;
     $result["status"] = 1;
     file_put_contents('../config/deadline.json',json_encode($data));
+    echo json_encode($result);
 }
 /*
  * 错误
