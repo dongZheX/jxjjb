@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="json/html; charset=UTF-8"/>
+    <title>功能中心</title>
+    <!--用百度的静态资源库的cdn安装bootstrap环境-->
+    <!-- Bootstrap 核心 CSS 文件 -->
+    <link href="styles/bootstrap.min.css" rel="stylesheet">
+    <!--font-awesome 核心我CSS 文件-->
+    <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/toastr.css">
+    <link rel="stylesheet" href="styles/bootstrap-table.min.css">
+    <!-- 在bootstrap.min.js 之前引入 -->
+    <script src="scripts/jquery.js"></script>
+    <script src="scripts/jquery.thickbox.js"></script>
+    <link rel="stylesheet" href="styles/thickbox.css">
+    <script src="scripts/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap 核心 JavaScript 文件 -->
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/jquery.cookie.js"></script>
+    <script src="scripts/jquery-migrate-1.2.1.js"></script>
+    <!--jquery.validate-->
+    <script type="text/javascript" src="scripts/jquery.validate.js"></script>
+    <script type="text/javascript" src="scripts/jquery.validate.messages_cn.js"></script>
+    <script src="scripts/bootstrap-table.min.js"></script>
+    <script src="scripts/bootstrap-table-zh-CN.min.js"></script>
+    <script src="scripts/bootbox.min.js"></script>
+    <script src="scripts/toastr.js"></script>
+    <script src="scripts/jquery.media.js"></script>
+    <script src="scripts/loginCheck.js"></script>
+    <script src="scripts/functionCenter.js"></script>
+    <style>
+        a:hover{
+            text-decoration: none;
+
+        }
+    </style>
+</head>
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#navbarcol">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">定级评优</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarcol">
+            <ul class="nav navbar-nav">
+                <li style="margin-left: 10px"><a href="index.html"><span class="glyphicon glyphicon-home"
+                                                                         style="margin-right: 5px"></span>首页</a></li>
+                <li style="margin-left: 10px;display:none"><a href="submitMat.html"><span
+                        class="glyphicon glyphicon-subscript" style="margin-right: 5px"></span>材料提交</a></li>
+                <li style="margin-left: 10px;display:none"><a href="checkMat.html"><span
+                        class="glyphicon glyphicon-search" style="margin-right: 5px"></span>材料审核</a></li>
+                <li   style="margin-left: 10px"><a href="select.html"><span class="glyphicon glyphicon-check"
+                                                                                          style="margin-right: 5px">查询</span></a></li>
+                <li class="active" style="margin-left: 10px"><a href="funcCenter.html"><span class="glyphicon glyphicon-tower" style="margin-right: 5px"></span >功能中心</a></li>
+            </ul>
+            <ul class="nav navbar-right navbar-nav">
+                <li><a id="a_user_tag" href="user.html" data-toggle="popover"><span class="glyphicon glyphicon-user" style="margin-right: 5px"></span >我的</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--导航栏结束-->
+<div>
+    <div class="container" style="margin-top: 100px;width: 1500px">
+        <div class="row">
+            <div class="span4 jumbotron" style="float: left;">
+                <h2>导入用户信息</h2>
+                <p>说明：可以单个导入用户信息，</p>
+                <p>用户初始密码为：11111</p>
+                <p>也可以批量导入用户信息，</p>
+                <p>点击下载模板，填写导入</p>
+                <!--危险操作多重判断权限-->
+                <p>
+                    <a class="btn btn-success btn-large" id="import_user_single">单个导入</a>
+                    <a class="btn btn-success btn-large" href="model/用户信息表模板.xls" style="margin-left: 10px">下载模板</a>
+                    <a class="btn btn-success btn-large" id="import_user_much" style="margin-left: 10px">成批导入</a>
+                </p>
+            </div>
+            <div class="span4 jumbotron" style="float: left;margin-left: 20px">
+                <h2>导入宿舍卫生优秀率信息</h2>
+                <p>说明：请仔细检查卫生表信息，</p>
+                <p>避免出现数据错误，从而导致系统错误，或者分数</p>
+                <p>点击下载模板，填写导入</p>
+                <p>请勿多次导入,出错请联系管理员</p>
+                <!--危险操作多重判断权限-->
+                <p>
+                    <a class="btn btn-success btn-large" href="model/卫生表模板.xls" style="margin-left: 10px">下载模板</a>
+                    <a class="btn btn-success btn-large" id="import_ws_much" style="margin-left: 10px">导入</a>
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!--模拟框提交用户信息-->
+<form class="form-horizontal" role="form" id="add_user">
+    <div class="modal fade" id="add_user_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel9" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel9">添加用户</h4>
+                </div>
+                <div class="modal-body" style="margin: auto 40px">
+                    <!--学号-->
+                    <div class="form-group">
+                        <label for="userid" class="">学号&#58;</label>
+                        <input id="userid" name="userid" type="text" class="form-control required" placeholder="请输入学号"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_name" class="">姓名&#58;</label>
+                        <input id="user_name" name="user_name" type="text" class="form-control required" placeholder="请输入姓名"/>
+                    </div>
+                    <!--部门-->
+                    <div class="form-group">
+                        <label for="user_dept" class="">部门&#58;</label>
+                        <select id="user_dept" name="user_dept" class="form-control col-lg-4 required">
+                            <option>纪检部</option>
+                            <option>宣传部</option>
+                            <option>组织部</option>
+                        </select>
+                    </div>
+                    <!--材料应加分-->
+                    <div class="form-group">
+                        <label for="user_tel" class="">电话号码&#58;</label>
+                        <input id="user_tel" type="text" name="user_tel" class="form-control col-lg-4 required isMobile"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button  class="btn btn-default" id="UserSub">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</form>
+<!--模拟框提交成批模板-->
+<form class="form-horizontal" role="form" id="addFile">
+    <div class="modal fade" id="addFile_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel9" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel8">提交文件</h4>
+                </div>
+                <div class="modal-body" style="margin: auto 40px">
+                    <div class="form-group">
+                        <label for="commit_file" class="">添加模板文件</label>
+                        <input id="commit_file" type="file" name="commit_file" class="form-control col-lg-4 required"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button  class="btn btn-default" id="FileSub">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</form>
+<!--模拟框提交成批模板-->
+<form class="form-horizontal" role="form" id="addFile_2">
+    <div class="modal fade" id="addFile_modal_2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel9" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabelb">提交文件</h4>
+                </div>
+                <div class="modal-body" style="margin: auto 40px">
+                    <div class="form-group">
+                        <label for="commit_file_2" class="">添加模板文件</label>
+                        <input id="commit_file_2" type="file" name="commit_file_w" class="form-control col-lg-4 required"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button  class="btn btn-default" id="FileSub_2">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</form>
+</body>
+</html>

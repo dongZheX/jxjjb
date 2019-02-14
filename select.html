@@ -29,10 +29,12 @@
     <script src="scripts/toastr.js"></script>
     <script src="scripts/jquery.media.js"></script>
     <script src="scripts/loginCheck.js"></script>
+    <script src="scripts/select_2.js"></script>
     <script src="scripts/select.js"></script>
     <style>
-        a:hover {
+        a:hover{
             text-decoration: none;
+
         }
     </style>
 </head>
@@ -62,21 +64,10 @@
                         class="glyphicon glyphicon-search" style="margin-right: 5px"></span>材料审核</a></li>
                 <li class="active"  style="margin-left: 10px"><a href="select.html"><span class="glyphicon glyphicon-check"
                                                                 style="margin-right: 5px">查询</a></li>
-                <li class="dropdown" style="margin-left: 10px;display: none">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                            class="glyphicon glyphicon-tower" style="margin-right: 5px"></span>
-                        功能中心 <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">设置定级评优日期</a></li>
-                        <li><a href="#">导入加分项</a></li>
-                        <li><a href="#">我审核的</a></li>
-                    </ul>
-                </li>
+                <li style="margin-left: 10px"><a href="funcCenter.html"><span class="glyphicon glyphicon-tower" style="margin-right: 5px"></span >功能中心</a></li>
             </ul>
             <ul class="nav navbar-right navbar-nav">
-                <li><a id="a_user_tag" href="user.html" data-toggle="popover"><span class="glyphicon glyphicon-user"
-                                                                            style="margin-right: 5px"></span>我的</a></li>
+                <li><a id="a_user_tag" href="user.html" data-toggle="popover"><span class="glyphicon glyphicon-user" style="margin-right: 5px"></span >我的</a></li>
             </ul>
         </div>
     </div>
@@ -91,6 +82,8 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li role="presentation" class="active"><a href="#select1" data-toggle="pill"
                                                               class="active">加分项查询</a></li>
+                    <li role="presentation" ><a href="#select2" data-toggle="pill"
+                                                              class="active">通讯录</a></li>
                 </ul>
             </div>
             <!--面板头结束-->
@@ -98,7 +91,7 @@
             <div class="panel-body">
                 <div class="tab-content">
                     <!--材料提交面板-->
-                    <div id="select1" class="tab-pane active">
+                    <div id="select1" class="tab-pane  active">
                         <!--//查询某班级-->
                         <div>
                             <form class="form-horizontal" id="check_form_select">
@@ -134,10 +127,37 @@
                             </form>
                         </div>
                         <!--表格-->
-                        <table id="tb_select1"></table>
+                        <table id="tb_select1" style="table-layout: fixed"></table>
+                    </div>
+                    <!--材料提交面板结束-->
+                    <!--通讯录界面开始-->
+                    <div id="select2" class="tab-pane">
+                        <!--查询界面-->
+                        <div class="panel panel-default" style="padding: 20px">
+                            <div  style="padding:10px;float: left;width: 500px">
+                                <input name="who" type="radio" id="radio_tzb" checked>团支部
+                                <p style="display: inline">&nbsp&nbsp&nbsp年级&nbsp:&nbsp</p><select id="select_y_s2"></select>
+                                <p style="display: inline">&nbsp&nbsp&nbsp专业&nbsp:&nbsp</p><select id="select_m_s2"></select>
+                                <p style="display: inline">&nbsp&nbsp&nbsp班级&nbsp:&nbsp</p><select
+                                    id="select_class_s2"></select>
+                            </div>
+                            <div style="float: left;margin-left: 20px;padding:10px;">
+                                <input name="who" type="radio" id="radio_txz">团学组织
+                                <p style="display: inline">&nbsp&nbsp&nbsp部门&nbsp:&nbsp</p>
+                                <select id="select_dept" disabled>
+                                    <option>全部</option>
+                                    <option>纪检部</option>
+                                    <option>宣传部</option>
+                                    <option>组织部</option>
+                                </select>
+                            </div>
+                            <button id="btn_txl" value="查询" class="btn btn-primary" style="margin-left: 30px;margin-top: 5px">查询</button>
+                            <br style="clear: both">
+                        </div>
+                        <table id="tb_txl"></table>
                     </div>
                 </div>
-                <!--材料提交面板结束-->
+
             </div>
         </div>
         <!--面板主题结束-->

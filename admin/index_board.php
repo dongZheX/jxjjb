@@ -14,7 +14,6 @@ if($action==1){
     $file = fopen($file,'w');
     fwrite($file,$content);
     fclose($file);
-
 }
 else{
     $files = '../data/index_board.txt';

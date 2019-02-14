@@ -40,7 +40,8 @@ function InitselectIf() {
         select_class.append(
             "<option>全部</option>"+
             "<option>01</option>"+
-            "<option>02</option>"
+            "<option>02</option>"+
+            "<option>03</option>"
         );
         select_state.append(
             "<option>全部</option>"+
@@ -147,12 +148,12 @@ let TableInits1 = function () {
                 title: '材料名',
                 align:"center",
                 valign:"middle",
-                searchable:true
+
             }, {
                 field: 'class_id',
                 title: '班级名',
                 align:"center",
-                valign:"middle"
+                valign:"middle",
             },{
                 field: 'plus_item_B',
                 title: '所属大项',

@@ -41,7 +41,7 @@ if($action==1){
     while ($row = mysqli_fetch_assoc($res)){
         $row['plus_state'] = getPlusState($row['plus_state']);
         $row['plus_item_B'] = getBigItem($row['plus_item_B']);
-        $row['plus_audit_employee'] = getAuditName($row['plus_audit_employee']);
+        if ($row['plus_audit_employee'])$row['plus_audit_employee'] = getAuditName($row['plus_audit_employee']);
         $row=array_filter($row,create_function('$v','return !empty($v);'));
         $result[$count++] = $row;
     }

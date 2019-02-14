@@ -49,6 +49,15 @@ $(function () {
                             }
                         });
                     }
+                    if(window.location.toString().split("/")[3]=="funcCenter.html"){
+                        bootbox.alert({
+                            size:"small",
+                            message:"您没有权限",
+                            callback:function () {
+                                window.location="index.html";
+                            }
+                        });
+                    }
                 }
             }
 

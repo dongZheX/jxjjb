@@ -31,7 +31,8 @@ function InitSelect() {
         select_m.val(data[username.substring(4,6)]);
         select_class.append(
             "<option>01</option>"+
-            "<option>02</option>"
+            "<option>02</option>"+
+            "<option>03</option>"
         );
         //假设设置
         select_y.val(username.substring(0,4));
