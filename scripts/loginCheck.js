@@ -31,7 +31,7 @@ $(function () {
                             size:"small",
                             message:"您没有权限",
                             callback:function () {
-                                window.location="index.html";
+                                window.location="login.html";
                             }
                         });
                     }
@@ -45,7 +45,7 @@ $(function () {
                             size:"small",
                             message:"您没有权限",
                             callback:function () {
-                                window.location="index.html";
+                                window.location="login.html";
                             }
                         });
                     }
@@ -54,7 +54,7 @@ $(function () {
                             size:"small",
                             message:"您没有权限",
                             callback:function () {
-                                window.location="index.html";
+                                window.location="login.html";
                             }
                         });
                     }

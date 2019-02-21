@@ -5,7 +5,7 @@
  * Date: 2019/2/7
  * Time: 22:40
  */
-header("Content-type: text/html;charset=utf-8");
+header("Content-type: json/html;charset=utf-8");
 header("Cache-Control: no-cache");
 if(isset($_REQUEST['action']))$action = $_REQUEST['action'];
 if(isset($_REQUEST['content']))$content = $_REQUEST['content'];
